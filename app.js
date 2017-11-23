@@ -33,8 +33,8 @@ mongoose.connect(keys.mongodb.dbURI, ()=>{
 	console.log('connected to mongodb');
 });
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -43,31 +43,31 @@ app.use('/auth',authRoutes);
 app.use('/profile',profileRoutes);
 
 app.get('/', (req, res)=>{
-	res.render("page-landing", {layout:false});
+	res.render("page-landing", {layout:false, user: req.user});
 });
 
 
 /*-------------------*/
 app.get('/page-landing', (req, res)=>{
-	res.render("page-landing", {layout:false});
+	res.render("page-landing", {layout:false, user: req.user});
 });
 app.get('/page-dashboard', (req, res)=>{
-	res.render("page-dashboard");
+	res.render("page-dashboard", {user: req.user});
 });
 app.get('/page-profile', (req, res)=>{
-	res.render("page-profile");
+	res.render("page-profile", {user: req.user});
 });
 app.get('/page-table', (req, res)=>{
-	res.render("page-table");
+	res.render("page-table", {user: req.user});
 });
 app.get('/page-icon', (req, res)=>{
-	res.render("page-icon");
+	res.render("page-icon", {user: req.user});
 });
 app.get('/page-map', (req, res)=>{
-	res.render("page-map");
+	res.render("page-map", {user: req.user});
 });
 app.get('/page-blank', (req, res)=>{
-	res.render("page-blank");
+	res.render("page-blank", {user: req.user});
 });
 app.get('/page-error404', (req, res)=>{
 	res.render("page-error404", {layout:false});
