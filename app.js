@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const nodemailer = require('nodemailer');
 const path = require('path');
+const favicon = require('serve-favicon')
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
@@ -33,6 +34,7 @@ mongoose.connect(keys.mongodb.dbURI, ()=>{
 });
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
