@@ -3,6 +3,15 @@ const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const nodemailer = require('nodemailer');
 const path = require('path');
+const mongoose = require('mongoose');
+const keys = require('./config/keys');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const passportSetup = require('./config/passport-setup');
+
+const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profile-routes');
+
 
 const app = express();
 
@@ -11,10 +20,25 @@ const hbs = exphbs.create({defaultLayout: 'main'});
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+app.use(cookieSession({
+	maxAge: 24 * 60 * 60 * 1000,
+	keys: [keys.session.cookieKey]
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+mongoose.connect(keys.mongodb.dbURI, ()=>{
+	console.log('connected to mongodb');
+});
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use('/auth',authRoutes);
+app.use('/profile',profileRoutes);
 
 app.get('/', (req, res)=>{
 	res.render("page-dashboard");
@@ -47,35 +71,6 @@ app.get('/page-error404', (req, res)=>{
 	res.render("page-error404", {layout:false});
 });
 /*-------------------*/
-
-app.get('/pages-profile', (req, res)=>{
-	res.render("pages-profile");
-});
-
-app.get('/index', (req, res)=>{
-	res.render("index");
-});
-
-app.get('/icon-material', (req, res)=>{
-	res.render("icon-material");
-});
-
-app.get('/map-google', (req, res)=>{
-	res.render("map-google");
-});
-
-app.get('/pages-blank', (req, res)=>{
-	res.render("pages-blank");
-});
-
-app.get('/pages-error-404', (req, res)=>{
-	res.render("pages-error-404");
-});
-
-
-app.get('/table-basic', (req, res)=>{
-	res.render("table-basic");
-});
 
 app.post('/send', (req, res) => {
 	const output = `
