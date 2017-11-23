@@ -105,6 +105,9 @@ app.post('/send', (req, res) => {
 	});
 });
 
-app.listen(3000, ()=> {	console.log('Server started...');});
+app.set('port',(process.env.PORT || 3000));
+app.listen(app.get('port'), ()=> {	
+	console.log('Server started and listening on ', app.get('port'));
+});
 
 
