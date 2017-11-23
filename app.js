@@ -87,8 +87,8 @@ app.post('/send', (req, res) => {
 	let transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth:{
-			user: 'cbalamanatuic@gmail.com',
-			pass: 'Ch3st3rarian3092986'
+			user: keys.testmail.user,
+			pass: keys.testmail.pass
 		}
 	});
 
@@ -113,13 +113,3 @@ app.listen(3000, ()=> {
 });
 
 
-/*
-	Ethreal
-	auth:{
-		user: 'v7vdnwwrknnirc76@ethereal.email',
-		pass: '9etJNJdRXqxgneVupw'
-	}
-
-	NodeMailer + Gmail
-	https://medium.com/@manojsinghnegi/sending-an-email-using-nodemailer-gmail-7cfa0712a799
-*/
