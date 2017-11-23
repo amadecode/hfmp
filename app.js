@@ -41,7 +41,7 @@ app.use('/auth',authRoutes);
 app.use('/profile',profileRoutes);
 
 app.get('/', (req, res)=>{
-	res.render("page-dashboard");
+	res.render("page-landing", {layout:false});
 });
 
 
@@ -87,29 +87,24 @@ app.post('/send', (req, res) => {
 	let transporter = nodemailer.createTransport({
 		service: 'gmail',
 		auth:{
-			user: keys.testmail.user,
-			pass: keys.testmail.pass
+			user: keys.nodemailer.user,
+			pass: keys.nodemailer.pass
 		}
 	});
 
 	let mailOptions = {
-		from: 'cbalamanatuic@gmail.com',
-		to: 'cbalamanatuic@gmail.com',
+		from: keys.nodemailer.user,
+		to: keys.nodemailer.user,
 		subject: 'Test Nodemailer...',
 		html: output
 	};
 
 	transporter.sendMail(mailOptions, (error, info)=>{
-		if(error){
-			return console.log(error);
-		}
-		else
-			console.log(info);		
+		if(error)return console.log(error);
+		else console.log(info);		
 	});
 });
 
-app.listen(3000, ()=> {
-	console.log('Server started...');
-});
+app.listen(3000, ()=> {	console.log('Server started...');});
 
 
